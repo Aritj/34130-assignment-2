@@ -26,10 +26,8 @@ def main():
     print(f"Symbol time slot width (Ts): {Ts*1e12:.0f} [ps]")  # ps = picoseconds
     print(f"Sampling time (Tsa): {Tsa*1e12:.0f} [ps]")
     print(f"Sampling frequency (Fsa): {Fsa*1e-9:.0f} [GHz]")  # GHz = gigahertz
-    print(f"Temporal width of total time window (Tw): {Tw*1e6:.0f} [µs]")
+    print(f"Temporal width of total time window (Tw): {Tw*1e12} [ps]")
     print(f"Frequency resolution (Delta_F): {Delta_F*1e-9:.2f} [GHz]")
-    print(f"Time Vector (first 10 elements in ps): {time_vector[:10]*1e12}")
-    print(f"Frequency Vector (first 10 elements in GHz): {frequency_vector[:10]*1e-9}")
 
 
 if __name__ == "__main__":
