@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from q1_1 import Tsa
 from q1_3 import L, generate_bit_sequence
 
+# Set figure DPI to 300 (increasing plot resolution)
+plt.rcParams["savefig.dpi"] = 300
+
 # Given data
 SpS = 100  # Samples per symbol
 A = 2  # Amplitude

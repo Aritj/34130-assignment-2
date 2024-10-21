@@ -4,6 +4,12 @@ import numpy as np
 from scipy.signal import freqz, butter
 from q1_1 import Fsa
 
+# Set figure DPI to 300 (increasing plot resolution)
+plt.rcParams["savefig.dpi"] = 300
+
+# Cutoff frequencies for the four filters
+cutoff_freqs = [10e9, 7.5e9, 5e9, 2.5e9]
+
 
 # Function to calculate and plot the transfer functions for different cutoff frequencies
 def plot_transfer_functions(cutoff_freqs, sampling_freq, num_points=1000):
@@ -33,9 +39,9 @@ def plot_transfer_functions(cutoff_freqs, sampling_freq, num_points=1000):
     plt.legend()
     plt.show()
 
+def main():
+    # Plot the transfer functions
+    plot_transfer_functions(cutoff_freqs, Fsa)  # Use Fsa as the sampling frequency
 
-# Cutoff frequencies for the four filters
-cutoff_freqs = [10e9, 7.5e9, 5e9, 2.5e9]
-
-# Plot the transfer functions
-plot_transfer_functions(cutoff_freqs, Fsa)  # Use Fsa as the sampling frequency
+if __name__ == '__main__':
+    main()

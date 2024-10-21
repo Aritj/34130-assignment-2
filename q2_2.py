@@ -7,6 +7,8 @@ from q1_6 import nrz_spectrum
 from q2_1 import cutoff_freqs
 from scipy.signal import freqz, butter
 
+# Set figure DPI to 300 (increasing plot resolution)
+plt.rcParams["savefig.dpi"] = 300
 
 # Function to apply the filter in the frequency domain and plot the result
 def plot_filtered_spectrum(input_spectrum, cutoff_freqs, sampling_freq):
@@ -40,5 +42,8 @@ def plot_filtered_spectrum(input_spectrum, cutoff_freqs, sampling_freq):
     plt.show()
 
 
-# Step 2: Apply the filters and plot the filtered spectra
-plot_filtered_spectrum(nrz_spectrum, cutoff_freqs, Fsa)
+def main():
+    plot_filtered_spectrum(nrz_spectrum, cutoff_freqs, Fsa)
+    
+if __name__ == '__main__':
+    main()

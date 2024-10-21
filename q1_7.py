@@ -1,6 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+# Set figure DPI to 300 (increasing plot resolution)
+plt.rcParams["savefig.dpi"] = 300
+
 # Parameters (adapt these based on your previous code)
 L = 100  # Number of symbols
 SpS = 100  # Samples per symbol

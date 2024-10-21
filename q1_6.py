@@ -5,6 +5,9 @@ from q1_1 import N
 from q1_2 import freq
 from q1_5 import nrz_waveform
 
+# Set figure DPI to 300 (increasing plot resolution)
+plt.rcParams["savefig.dpi"] = 300
+
 # Step 1: Perform FFT and shift
 nrz_spectrum = np.fft.fftshift(np.fft.fft(nrz_waveform))
 
