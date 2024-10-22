@@ -1,14 +1,14 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from q1_1 import N, Fsa
-from q1_2 import freq
+from q1_1 import N, Fsa, frequency_vector
 from q1_6 import nrz_spectrum
 from q2_1 import cutoff_freqs
 from scipy.signal import freqz, butter
 
 # Set figure DPI to 300 (increasing plot resolution)
 plt.rcParams["savefig.dpi"] = 300
+
 
 # Function to apply the filter in the frequency domain and plot the result
 def plot_filtered_spectrum(input_spectrum, cutoff_freqs, sampling_freq):
@@ -28,11 +28,15 @@ def plot_filtered_spectrum(input_spectrum, cutoff_freqs, sampling_freq):
 
         # Plot the output spectrum
         plt.semilogy(
-            freq, np.abs(output_spectrum) / N, label=f"Fc = {cutoff_freq / 1e9} GHz"
+            frequency_vector,
+            np.abs(output_spectrum) / N,
+            label=f"Fc = {cutoff_freq / 1e9} GHz",
         )
 
     # Plot the input spectrum for comparison
-    plt.semilogy(freq, np.abs(input_spectrum) / N, "k--", label="Input Spectrum")
+    plt.semilogy(
+        frequency_vector, np.abs(input_spectrum) / N, "k--", label="Input Spectrum"
+    )
 
     plt.title("Filtered Output Spectrum (Logarithmic Scale)")
     plt.xlabel("Frequency (Hz)")
@@ -44,6 +48,7 @@ def plot_filtered_spectrum(input_spectrum, cutoff_freqs, sampling_freq):
 
 def main():
     plot_filtered_spectrum(nrz_spectrum, cutoff_freqs, Fsa)
-    
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     main()

@@ -1,13 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from q1_1 import N, Tsa, SpS, A
+from q1_1 import N, Tsa, SpS, A, time_vector, frequency_vector
 
 # Set figure DPI to 300 (increasing plot resolution)
 plt.rcParams["savefig.dpi"] = 300
-
-# Time vector
-t = np.arange(0, N * Tsa, Tsa)  # Total time duration
 
 # Generate square pulse
 square_pulse = np.zeros(N)
@@ -17,13 +14,13 @@ square_pulse[:SpS] = A  # First SpS samples set to amplitude A
 square_pulse_freq = np.fft.fftshift(np.fft.fft(square_pulse))
 
 # Frequency vector
-freq = np.fft.fftfreq(N, Tsa)
-freq = np.fft.fftshift(freq)
+# freq = np.fft.fftfreq(N, Tsa)
+# freq = np.fft.fftshift(freq)
 
 
 def plot_square_pulse():
     plt.figure(figsize=(10, 4))
-    plt.plot(t[: 2 * SpS] * 1e12, square_pulse[: 2 * SpS])  # Plot first two symbols
+    plt.plot(time_vector[: 2 * SpS] * 1e12, square_pulse[: 2 * SpS])
     plt.title("Square Pulse in Time Domain")
     plt.xlabel("Time (ps)")
     plt.ylabel("Amplitude")
@@ -33,7 +30,7 @@ def plot_square_pulse():
 
 def plot_normalized_spectrum():
     plt.figure(figsize=(10, 4))
-    plt.plot(freq * 1e-9, np.abs(square_pulse_freq) / N)
+    plt.plot(frequency_vector * 1e-9, np.abs(square_pulse_freq) / N)
     plt.title("Spectrum of Square Pulse (Linear Scale)")
     plt.xlabel("Frequency (GHz)")
     plt.ylabel("Normalized Magnitude")
@@ -43,7 +40,7 @@ def plot_normalized_spectrum():
 
 def plot_normalized_spectrum_log():
     plt.figure(figsize=(10, 4))
-    plt.semilogy(freq * 1e-9, np.abs(square_pulse_freq) / N)
+    plt.semilogy(frequency_vector * 1e-9, np.abs(square_pulse_freq) / N)
     plt.title("Spectrum of Square Pulse (Logarithmic Scale)")
     plt.xlabel("Frequency (GHz)")
     plt.ylabel("Normalized Magnitude (Log Scale)")

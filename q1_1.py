@@ -8,12 +8,12 @@ SpS = 100  # Samples per symbol
 L = 100  # Number of symbols
 
 # Calculations
-Ts = 1 / Rs  # Symbol time slot width (seconds)
-N = L * SpS  # Total number of samples (unitless)
-Tsa = Ts / SpS  # Sampling time (seconds)
-Fsa = 1 / Tsa  # Sampling frequency (Hz)
-Tw = N * Tsa  # Temporal width of the total time window (seconds)
-Delta_F = 1 / Tw  # Frequency resolution (Hz)
+N = L * SpS  # a) Total number of samples (unitless)
+Ts = 1 / Rs  # b) Symbol time slot width (seconds)
+Tsa = Ts / SpS  # c) Sampling time (seconds)
+Fsa = 1 / Tsa  # d) Sampling frequency (Hz)
+Tw = N * Tsa  # e) Temporal width of the total time window (seconds)
+Delta_F = 1 / Tw  # f) Frequency bin (Hz)
 
 # Generate time vector and frequency vector
 time_vector = np.arange(0, Tw, Tsa)  # Time vector
