@@ -1,53 +1,58 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-from q1_1 import N, Fsa, frequency_vector
+from q1_1 import N, frequency_vector
 from q1_6 import nrz_spectrum
-from q2_1 import cutoff_freqs
-from scipy.signal import freqz, butter
+from q2_1 import filters, filter_color_map, H
 
 # Set figure DPI to 300 (increasing plot resolution)
 plt.rcParams["savefig.dpi"] = 300
 
-
-# Function to apply the filter in the frequency domain and plot the result
-def plot_filtered_spectrum(input_spectrum, cutoff_freqs, sampling_freq):
-    plt.figure(figsize=(10, 6))
-
-    for i, cutoff_freq in enumerate(cutoff_freqs):
-        # Design the low-pass Butterworth filter
-        nyquist = 0.5 * sampling_freq
-        normal_cutoff = cutoff_freq / nyquist
-        b, a = butter(4, normal_cutoff, btype="low", analog=False)
-
-        # Get the frequency response of the filter
-        w, h = freqz(b, a, worN=len(input_spectrum), fs=sampling_freq)
-
-        # Apply the filter in the frequency domain (multiply with input spectrum)
-        output_spectrum = input_spectrum * h
-
-        # Plot the output spectrum
-        plt.semilogy(
-            frequency_vector,
-            np.abs(output_spectrum) / N,
-            label=f"Fc = {cutoff_freq / 1e9} GHz",
-        )
-
-    # Plot the input spectrum for comparison
-    plt.semilogy(
-        frequency_vector, np.abs(input_spectrum) / N, "k--", label="Input Spectrum"
-    )
-
-    plt.title("Filtered Output Spectrum (Logarithmic Scale)")
-    plt.xlabel("Frequency (Hz)")
-    plt.ylabel("Magnitude (Log Scale)")
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+# Calculate output spectra
+output_spectra = np.zeros((len(filters), len(frequency_vector)), dtype=complex)
+for i, fc in enumerate(filters):
+    output_spectra[i, :] = nrz_spectrum * H[i, :]
 
 
 def main():
-    plot_filtered_spectrum(nrz_spectrum, cutoff_freqs, Fsa)
+    # Create plots for each filter
+    plot_scale = 1e-9  # Hz to GHz
+
+    for i, fc in enumerate(filters):
+        plt.figure(figsize=(9, 6))
+
+        # Plot input and output spectra
+        plt.semilogy(
+            frequency_vector * plot_scale,
+            np.abs(nrz_spectrum) / N,
+            linewidth=2,
+            color="black",
+            label="Input Spectrum",
+        )
+        plt.semilogy(
+            frequency_vector * plot_scale,
+            np.abs(output_spectra[i, :]) / N,
+            color=filter_color_map.get(fc),
+            linewidth=2,
+            label="Output Spectrum",
+        )
+
+        # Add vertical line at cutoff frequency
+        plt.axvline(
+            fc * plot_scale,
+            linestyle=":",
+            color=filter_color_map.get(fc),
+            linewidth=2,
+        )
+
+        # Plot settings
+        plt.grid()
+        plt.xlabel("Frequency (GHz)", fontsize=12, color="black")
+        plt.ylabel("Magnitude (dB)", fontsize=12, color="black")
+        plt.title(f"Filter {i+1} (Fc = {fc * plot_scale:.1f} GHz)")
+        plt.legend()
+        plt.xlim(0, frequency_vector.max() * plot_scale)
+        plt.show()
 
 
 if __name__ == "__main__":

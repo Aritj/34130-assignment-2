@@ -1,52 +1,57 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-from q1_1 import N, Fsa, SpS
-from q1_5 import nrz_waveform, time_vector
-from q1_6 import nrz_spectrum
-from q2_1 import cutoff_freqs
-from scipy.signal import freqz, butter
+from q1_1 import time_vector, SpS
+from q1_7 import nrz_signal_res as nrz_signal
+from q2_1 import filters, filter_color_map
+from q2_2 import output_spectra
+
+# Set figure DPI to 300 (increasing plot resolution)
+plt.rcParams["savefig.dpi"] = 300
+
+# Calculate time-domain signals for each filter using inverse FFT to get time-domain signal
+output_time_signals = np.zeros((len(filters), len(time_vector)), dtype=complex)
+for i, fc in enumerate(filters):
+    output_time_signals[i, :] = np.fft.ifft(np.fft.ifftshift(output_spectra[i, :]))
 
 
-# Revised approach to apply filtering and handle signal characteristics better
-def apply_filter_time_domain(input_spectrum, cutoff_freqs, sampling_freq, N):
-    plt.figure(figsize=(10, 6))
+def main():
+    # Plotting the first 12 time slots for input and output signals
+    num_time_slots = 12
+    plot_scale = 1e12  # s to ps
 
-    for i, cutoff_freq in enumerate(cutoff_freqs):
-        # Adjust the cutoff frequencies to better match the NRZ signal bandwidth
-        nyquist = 0.5 * sampling_freq
-        normal_cutoff = cutoff_freq / nyquist
-        b, a = butter(4, normal_cutoff, btype="low", analog=False)
+    for i, fc in enumerate(filters):
+        plt.figure(figsize=(10, 6))
 
-        # Get the frequency response of the filter
-        w, h = freqz(b, a, worN=len(input_spectrum), fs=sampling_freq)
-
-        # Apply the filter in the frequency domain
-        filtered_spectrum = input_spectrum * h
-
-        # Perform inverse FFT to get the time domain signal
-        filtered_time_domain = np.fft.ifft(np.fft.ifftshift(filtered_spectrum))
-
-        # Plot the first 12 time slots
-        time_slots = 12 * SpS
+        # Plot input signal
         plt.plot(
-            time_vector[:time_slots],
-            filtered_time_domain[:time_slots].real,
-            label=f"Fc = {cutoff_freq / 1e9} GHz",
+            time_vector[: SpS * num_time_slots] * plot_scale,
+            nrz_signal[: SpS * num_time_slots],
+            label="Input Signal",
+            color="black",
+            linewidth=2,
         )
 
-    # Plot the original input signal for comparison
-    plt.plot(
-        time_vector[:time_slots], nrz_waveform[:time_slots], "k--", label="Input Signal"
-    )
+        # Plot output signal after filtering
+        plt.plot(
+            time_vector[: SpS * num_time_slots] * plot_scale,
+            np.real(output_time_signals[i, : SpS * num_time_slots]),
+            label=f"Output Signal (Fc = {fc / 1e9:.2f} GHz)",
+            color=filter_color_map.get(fc),
+            linestyle="--",
+            linewidth=2,
+        )
 
-    plt.title("Filtered Output Signal in Time Domain (First 12 Time Slots)")
-    plt.xlabel("Time (s)")
-    plt.ylabel("Amplitude")
-    plt.grid(True)
-    plt.legend()
-    plt.show()
+        # Plots settings
+        plt.grid()
+        plt.xlabel("Time (ps)", fontsize=12)
+        plt.ylabel("Amplitude (A.U.)", fontsize=12)
+        plt.title(
+            f"Time Domain Signal: Input vs Output (Filter {i+1}, Fc = {fc / 1e9:.2f} GHz)"
+        )
+        plt.legend()
+        plt.show()
 
 
-# Apply the filters and plot the output in the time domain
-apply_filter_time_domain(nrz_spectrum, cutoff_freqs, Fsa, N)
+if __name__ == "__main__":
+    main()

@@ -2,19 +2,14 @@ import numpy as np
 
 L = 100
 
+np.random.seed(34130)
 
-def generate_bit_sequence(L, seed=34130):
-    # Set seed for reproducibility
-    np.random.seed(seed)
-
-    # Generate random bits (0 or 1)
-    bit_sequence = np.random.randint(0, 2, L)
-
-    return bit_sequence
+# Generate random bits (0 or 1)
+bit_sequence = np.random.randint(0, 2, L)
 
 
 def main():
-    print(generate_bit_sequence(L))
+    print(bit_sequence)
 
 
 if __name__ == "__main__":

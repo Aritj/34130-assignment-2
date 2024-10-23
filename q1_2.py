@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from q1_1 import N, Tsa, SpS, A, time_vector, frequency_vector
+from q1_1 import N, SpS, A, time_vector, frequency_vector
 
 # Set figure DPI to 300 (increasing plot resolution)
 plt.rcParams["savefig.dpi"] = 300
@@ -12,10 +12,6 @@ square_pulse[:SpS] = A  # First SpS samples set to amplitude A
 
 # FFT and FFT shift
 square_pulse_freq = np.fft.fftshift(np.fft.fft(square_pulse))
-
-# Frequency vector
-# freq = np.fft.fftfreq(N, Tsa)
-# freq = np.fft.fftshift(freq)
 
 
 def plot_square_pulse():

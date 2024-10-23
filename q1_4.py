@@ -7,14 +7,13 @@ test_bits = np.array([1, 2, 3])
 
 
 def main():
-    # Repeating the bits SpS times
+    # a) Replicate the bits test_SpS times (equivalent to repmat in MATLAB)
     test_wave = np.tile(test_bits, (test_SpS, 1))
+    print(f"a)\n{test_wave}\n")
 
-    # Reshaping the array into a 1D vector
-    test_wave = test_wave.reshape(test_SpS * test_L, 1)
-
-    # Display the result
-    print(test_wave)
+    # b) Reshape the array into a column vector (equivalent to reshape in MATLAB)
+    test_wave = np.reshape(test_wave, (test_SpS * test_L, 1))
+    print(f"b)\n{test_wave}\n")
 
 
 if __name__ == "__main__":

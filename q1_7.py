@@ -1,52 +1,46 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from q1_1 import SpS, A
+from q1_3 import bit_sequence
+
 # Set figure DPI to 300 (increasing plot resolution)
 plt.rcParams["savefig.dpi"] = 300
-
-# Parameters (adapt these based on your previous code)
-L = 100  # Number of symbols
-SpS = 100  # Samples per symbol
-Amplitude = 2  # Amplitude scaling factor
-
-# Example bit sequence (0 and 1)
-bit_sequence = np.random.randint(0, 2, L)
 
 # 1. Repeat the bit sequence to match the samples per symbol (like repmat)
 nrz_signal = np.repeat(bit_sequence, SpS)
 
 # 2. Reshape is not needed here because np.repeat already gives a 1D array.
 # Scaling the signal by amplitude
-nrz_signal_res = nrz_signal * Amplitude
+nrz_signal_res = nrz_signal * A
 
 
-# Function to plot the eye diagram
-def plot_eye_diagram(signal, eye_periods=2):
+def plot_eye_diagram(signal, samples_per_symbol, title, color):
     plt.figure(figsize=(10, 6))
-    num_segments = len(signal) // SpS
 
-    for i in range(num_segments - eye_periods):
-        # Extract a segment of the signal (equivalent to one eye trace)
-        segment = signal[i * SpS : (i + eye_periods) * SpS]
+    # Split the signal into chunks of two symbols for the eye-diagram
+    num_symbols = len(signal) // samples_per_symbol
+    for i in range(0, num_symbols - 1):
+        # Extract two symbols at a time
+        plt.plot(
+            signal[i * samples_per_symbol : (i + 2) * samples_per_symbol], color=color
+        )
 
-        # Adjust time segment for correct plotting (center around 0)
-        time_seg = np.linspace(-SpS, SpS, eye_periods * SpS)
-
-        # Plot the trace, using a light red color to replicate MATLAB's 'r' color
-        plt.plot(time_seg, segment, alpha=0.2, color="r")
-
-    # Set the title and labels for the plot
-    plt.title("Eye Diagram of NRZ Signal")
-    plt.xlabel("Time (ps)")
-    plt.ylabel("Amplitude (A.U.)")
     plt.grid(True)
-
-    # Set the x-axis limits to center the eye diagram
-    plt.xlim([-SpS, SpS])
-
-    # Display the plot
+    plt.title(title, fontsize=14)
+    plt.xlabel("Time (samples)", fontsize=12)
+    plt.ylabel("Amplitude (A.U.)", fontsize=12)
     plt.show()
 
 
-# 3. Plot the eye diagram with the generated NRZ signal
-plot_eye_diagram(nrz_signal_res)
+def main():
+    plot_eye_diagram(
+        nrz_signal_res,
+        SpS,
+        "Eye Diagram of NRZ signal",
+        "red",
+    )
+
+
+if __name__ == "__main__":
+    main()
