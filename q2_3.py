@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from q1_1 import time_vector, SpS
-from q1_7 import nrz_signal_res as nrz_signal
+from q1_5 import nrz_waveform
 from q2_1 import filters, filter_color_map
 from q2_2 import output_spectra
 
@@ -26,7 +26,7 @@ def main():
         # Plot input signal
         plt.plot(
             time_vector[: SpS * num_time_slots] * plot_scale,
-            nrz_signal[: SpS * num_time_slots],
+            nrz_waveform[: SpS * num_time_slots],
             label="Input Signal",
             color="black",
             linewidth=2,
@@ -36,7 +36,7 @@ def main():
         plt.plot(
             time_vector[: SpS * num_time_slots] * plot_scale,
             np.real(output_time_signals[i, : SpS * num_time_slots]),
-            label=f"Output Signal (Fc = {fc / 1e9:.2f} GHz)",
+            label=f"Output Signal",
             color=filter_color_map.get(fc),
             linestyle="--",
             linewidth=2,
@@ -49,7 +49,7 @@ def main():
         plt.title(
             f"Time Domain Signal: Input vs Output (Filter {i+1}, Fc = {fc / 1e9:.2f} GHz)"
         )
-        plt.legend()
+        plt.legend(loc='lower left')
         plt.show()
 
 

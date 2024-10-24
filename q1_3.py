@@ -1,15 +1,15 @@
 import numpy as np
 
-L = 100
-
+# Set seed to 34130
 np.random.seed(34130)
 
 # Generate random bits (0 or 1)
-bit_sequence = np.random.randint(0, 2, L)
+L = 100
+bits_OOK = np.random.randint(0, 2, L)
 
 
 def main():
-    print(bit_sequence)
+    print(bits_OOK)
 
 
 if __name__ == "__main__":

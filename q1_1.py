@@ -16,8 +16,8 @@ Tw = N * Tsa  # e) Temporal width of the total time window (seconds)
 Delta_F = 1 / Tw  # f) Frequency bin (Hz)
 
 # Generate time vector and frequency vector
-time_vector = np.arange(0, Tw, Tsa)  # Time vector
-frequency_vector = np.linspace(-Fsa / 2, Fsa / 2, N)  # Frequency vector centered at 0
+time_vector = np.arange(0, N) * Tsa  # Time vector
+frequency_vector = np.fft.fftshift(np.fft.fftfreq(N, Tsa))  # Frequency vector centered at 0
 
 
 def main():

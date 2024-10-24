@@ -2,13 +2,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from q1_1 import SpS, A, time_vector
-from q1_3 import bit_sequence
+from q1_3 import bits_OOK
 
 # Set figure DPI to 300 (increasing plot resolution)
 plt.rcParams["savefig.dpi"] = 300
 
-# Step 2: Generate the NRZ waveform (each bit repeated SpS times)
-nrz_waveform = np.repeat(bit_sequence, SpS) * A  # Scale by amplitude
+# Generate the NRZ waveform of L "random" bits repeated SpS times and scaled by amplitude A
+nrz_waveform = np.repeat(bits_OOK, SpS) * A
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     plt.xlabel("Time (ps)")
     plt.ylabel("Amplitude")
     plt.xlim(time_vector.min() * x_scale, time_vector[:time_slot].max() * x_scale)
-    plt.grid(True)
+    plt.grid()
     plt.show()
 
 
